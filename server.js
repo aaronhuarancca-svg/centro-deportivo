@@ -24,12 +24,16 @@ const pool = mysql.createPool({
 
 // 1. Obtener todas las instalaciones
 app.get('/api/instalaciones', async (req, res) => {
-    try {
-        const [rows] = await pool.query('SELECT * FROM instalaciones WHERE estado = "activa"');
-        res.json(rows);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
+  try {
+    // MODIFICACIÓN: Quitamos el WHERE estado = "activa" para probar si trae datos
+    const [rows] = await pool.query('SELECT * FROM instalaciones'); 
+    
+    console.log("Instalaciones encontradas en la BD:", rows); // Esto saldrá en tu terminal
+    res.json(rows);
+  } catch (err) {
+    console.error("Error en BD instalaciones:", err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // 2. Obtener reservas
